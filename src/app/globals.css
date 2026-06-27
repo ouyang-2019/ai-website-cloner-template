@@ -4,127 +4,371 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * AUBEAU design system — "Soft Glass".
+ * Emerald accent + frosted-glass surfaces + soft multi-stop gradient canvas.
+ * Variable names preserved for component compatibility; values are AUBEAU-owned.
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+  --color-background: var(--background-main-5);
+  --color-foreground: #0f172a;
+  --font-sans: var(--font-outfit), "Noto Sans SC", "Helvetica Neue", Helvetica,
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+  --font-mono: ui-monospace, "Geist Mono", monospace;
   --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* shadcn-compatible aliases (kept for ui/* primitives) */
+  --color-card: #ffffff;
+  --color-card-foreground: var(--text-icon-text-1);
+  --color-popover: #ffffff;
+  --color-popover-foreground: var(--text-icon-text-1);
+  --color-primary: var(--brand-brand01-black);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--neutral-grey100);
+  --color-secondary-foreground: var(--text-icon-text-1);
+  --color-muted: var(--neutral-grey100);
+  --color-muted-foreground: var(--text-icon-text-4);
+  --color-accent: var(--neutral-grey100);
+  --color-accent-foreground: var(--text-icon-text-1);
+  --color-destructive: #ff576d;
+  --color-border: var(--neutral-grey200);
+  --color-input: var(--neutral-grey200);
+  --color-ring: var(--brand-brand03-blue);
+
+  /* radii — glass surfaces lean larger */
+  --radius: 0.75rem;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  --font-outfit: Outfit, Inter, "Segoe UI", Arial, sans-serif;
+  --font-noto-sans-sc: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Heiti SC", sans-serif;
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Brand — Emerald (翡翠青绿) primary system */
+  --brand-brand01-black: #000818;
+  --brand-brand02-white: #ffffff;
+  --brand-brand03-blue: #10b981;     /* primary accent: emerald-500 */
+  --brand-brand04-green: #34d399;    /* emerald-400, lighter accent */
+  --brand-brand05-magenta: #ff576d;  /* destructive / PPT functional */
+
+  /* Emerald ramp (AUBEAU additions) */
+  --brand-emerald-50: #ecfdf5;
+  --brand-emerald-100: #d1fae5;
+  --brand-emerald-200: #a7f3d0;
+  --brand-emerald-500: #10b981;
+  --brand-emerald-600: #059669;
+  --brand-emerald-700: #047857;
+
+  /* Neutral grey scale — warmed slightly off the cold cast */
+  --neutral-grey60: #fafbfc;
+  --neutral-grey80: #f7f9fb;
+  --neutral-grey100: #f3f5f8;
+  --neutral-grey200: #e8ecf1;
+  --neutral-grey300: #dce2e9;
+  --neutral-grey400: #cfd6df;
+  --neutral-grey500: #b8c0cc;
+  --neutral-grey600: #8e98a8;
+  --neutral-grey700: #6b7686;
+  --neutral-grey800: #3a4453;
+  --neutral-grey900: #1a2330;
+  --neutral-grey950: #000818;
+
+  /* Text / icon scale */
+  --text-icon-text-1: #000818;
+  --text-icon-text-2: #1a2330;
+  --text-icon-text-3: #3a4453;
+  --text-icon-text-4: #6b7686;
+  --text-icon-text-5: #8e98a8;
+
+  /* Semantic backgrounds */
+  --background-main-1: var(--neutral-grey80);
+  --background-main-3: var(--brand-brand02-white);
+  --background-main-5: var(--brand-brand02-white);
+  --background-main-7: rgba(255, 255, 255, 0.5);
+  --background-overlay-2-tooltip: #0f172a;
+
+  /* Fills */
+  --fill-2: rgba(0, 8, 24, 0.04);
+  --fill-3-hover: rgba(0, 8, 24, 0.06);
+  --fill-4: var(--neutral-grey60);
+  --fill-7: rgba(255, 255, 255, 0.6);
+
+  /* Lines */
+  --line-3: var(--neutral-grey200);
+
+  /* —— Glass surfaces (Soft Glassmorphism) —— */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-strong: rgba(255, 255, 255, 0.80);
+  --glass-bg-soft: rgba(255, 255, 255, 0.42);
+  --glass-border: rgba(255, 255, 255, 0.70);
+  --glass-border-subtle: rgba(15, 23, 42, 0.06);
+  --glass-blur: 18px;
+  --glass-blur-strong: 28px;
+
+  /* —— Brand gradient (single source of truth; replaces old hardcoded pairs) —— */
+  --gradient-brand: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  --gradient-brand-soft: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.14) 0%,
+    rgba(52, 211, 153, 0.14) 100%
+  );
+
+  /* —— Soft multi-stop page canvas (replaces watercolor bg image) —— */
+  --gradient-canvas:
+    radial-gradient(1200px 620px at 10% -10%, rgba(16, 185, 129, 0.14), transparent 60%),
+    radial-gradient(1100px 560px at 95% -5%, rgba(167, 139, 250, 0.13), transparent 55%),
+    radial-gradient(900px 700px at 50% 112%, rgba(56, 189, 248, 0.10), transparent 60%),
+    linear-gradient(180deg, #f5fbf9 0%, #f6f4ff 48%, #f2f8ff 100%);
+
+  /* —— Soft layered shadows (replace single-layer shadows) —— */
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04),
+    0 10px 28px -8px rgba(15, 23, 42, 0.10),
+    0 2px 10px -3px rgba(16, 185, 129, 0.06);
+  --shadow-light: 0 2px 12px rgba(15, 23, 42, 0.06);
+  --shadow-input: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-glass: 0 1px 0 rgba(255, 255, 255, 0.65) inset,
+    0 6px 22px -6px rgba(15, 23, 42, 0.12),
+    0 16px 48px -12px rgba(16, 185, 129, 0.10);
+  --shadow-glow-emerald: 0 10px 34px -8px rgba(16, 185, 129, 0.40);
+
+  /* —— 气泡质感（多层柔和阴影替代单一 border；适配任意背景）—— */
+  --shadow-bubble:
+    0 0 0 1px rgba(15, 23, 42, 0.05),
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px -2px rgba(15, 23, 42, 0.06),
+    0 12px 32px -8px rgba(16, 185, 129, 0.08);
+  --shadow-bubble-hover:
+    0 0 0 1px rgba(16, 185, 129, 0.14),
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 8px 20px -4px rgba(15, 23, 42, 0.08),
+    0 18px 44px -10px rgba(16, 185, 129, 0.14);
+  /* 代码块质感（深色表面多层光） */
+  --shadow-code:
+    0 0 0 1px rgba(15, 23, 42, 0.08),
+    0 4px 14px -4px rgba(15, 23, 42, 0.18),
+    0 12px 28px -10px rgba(16, 185, 129, 0.10);
+
+  /* Skill brand colors */
+  --skill-ppt: #ff576d;
+  --skill-doc: #10b981;
+  --skill-image: #ffaa00;
+  --skill-table: #29cc5f;
+  --skill-website: #7357ff;
+
+  /* Beta / accents — aligned to emerald */
+  --beta-bg: #ecfdf5;
+  --beta-text: #059669;
+
+  --radius: 0.75rem;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     @apply font-sans;
   }
+  body {
+    background-color: #ffffff;
+    color: #1a2330;
+    font-feature-settings: "ss01";
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Soft Glass canvas — multi-stop gradient replaces the old watercolor image. */
+  .bg-homepage {
+    background-image: var(--gradient-canvas);
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+  }
+
+  /* Frosted-glass surfaces. Compose with rounded + shadow utilities. */
+  .glass {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    border: 1px solid var(--glass-border);
+  }
+  .glass-strong {
+    background-color: var(--glass-bg-strong);
+    backdrop-filter: blur(var(--glass-blur-strong)) saturate(165%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(165%);
+    border: 1px solid var(--glass-border);
+  }
+  .glass-card {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    border: 1px solid var(--glass-border-subtle);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Masonry waterfall used by 热门项目 */
+  .waterfall {
+    column-gap: 16px;
+    column-count: 4;
+  }
+  .waterfall > * {
+    break-inside: avoid;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 1380px) {
+    .waterfall {
+      column-count: 3;
+    }
+  }
+  @media (max-width: 1024px) {
+    .waterfall {
+      column-count: 2;
+    }
+  }
+}
+
+/* 促销广告栏流光动画（从内联 <style> 迁出，避免部分浏览器把 CSS 当可见乱码渲染） */
+@keyframes promo-shine {
+  0% { transform: translateX(-120%) rotate(12deg); }
+  100% { transform: translateX(320%) rotate(12deg); }
+}
+.promo-shine-bar {
+  animation: promo-shine 6s linear infinite;
+}
+
+/* 代码块语法高亮 token（rehype-highlight 生成 .hljs-xxx；翡翠主题，配 markdown-content 深色代码底） */
+.hljs {
+  color: var(--neutral-grey60);
+  background: transparent;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #64748b;
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag,
+.hljs-class .hljs-title {
+  color: #34d399;
+}
+.hljs-string,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-addition,
+.hljs-selector-attr {
+  color: #6ee7b7;
+}
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #fbbf24;
+}
+.hljs-title,
+.hljs-section,
+.hljs-type,
+.hljs-attr,
+.hljs-variable,
+.hljs-params,
+.hljs-property {
+  color: #5eead4;
+}
+.hljs-meta,
+.hljs-comment.hljs-doctag {
+  color: #38bdf8;
+}
+.hljs-deletion {
+  color: #fca5a5;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}
+
+/* —— 对话/画布质感动画（make-interfaces-feel-better）—— */
+
+/* 消息进场：淡入 + 微上移 + 轻模糊去隔行（错峰用 inline animation-delay）。 */
+@keyframes msg-enter {
+  from { opacity: 0; transform: translateY(8px); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.msg-enter {
+  animation: msg-enter 360ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+/* 流式打字光标（天工/Kimi 标志性，翡翠渐变 + 闪烁）。 */
+@keyframes caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.stream-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  background: linear-gradient(180deg, #10b981, #34d399);
+  border-radius: 1px;
+  animation: caret-blink 1s steps(2, start) infinite;
+}
+
+/* 思考时间线步骤进场（轻横向滑入）。 */
+@keyframes step-enter {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.step-enter {
+  animation: step-enter 240ms ease-out both;
+}
+
+/* 命中区扩展：小视觉按钮用伪元素撑到 40×40（不影响视觉尺寸，不拦截布局）。 */
+.hit-40 { position: relative; }
+.hit-40::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+}
+
+/* 文本质感：标题平衡换行、正文防孤行、动态数字等宽（防抖动）。 */
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+
+/* 流式光标：贴在正文最后一个块的文本末尾（天工/Kimi 风格，紧贴最后字符）。 */
+.streaming-md > *:last-child::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  background: linear-gradient(180deg, #10b981, #34d399);
+  border-radius: 1px;
+  animation: caret-blink 1s steps(2, start) infinite;
 }

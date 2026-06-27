@@ -1,20 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { CreditsProvider } from "@/components/credits/credits-provider";
+import { CreditInsufficientDialog } from "@/components/credits/credit-insufficient-dialog";
+import { TierLimitToast } from "@/components/credits/tier-limit-toast";
 
 export const metadata: Metadata = {
-  title: "Website Clone",
-  description: "Pixel-perfect website clone",
+  title: "AUBEAU · 企业级智能体协作平台",
+  description:
+    "AUBEAU — 企业级智能体协作平台：持久身份、长期记忆、自主触发、工件发布与渠道触达，一步到位。",
+  icons: {
+    icon: "/seo/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -23,11 +19,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="zh" className="light h-full antialiased">
+      <body className="min-h-full flex flex-col overflow-hidden">
+        <CreditsProvider>
+          {children}
+          <CreditInsufficientDialog />
+          <TierLimitToast />
+        </CreditsProvider>
+      </body>
     </html>
   );
 }
