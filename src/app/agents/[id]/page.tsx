@@ -1,11 +1,12 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Copy, Play, Sparkles } from "lucide-react";
+import { ArrowLeft, Copy, Play, Plug, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { AgentMcpPicker } from "@/components/agent-mcp-picker";
 import { AgentEngagementBar } from "@/components/agent-engagement-bar";
 import { AgentCaseShowcase } from "@/components/agent-case-showcase";
 import { BeautyBarrierPanel } from "@/components/beauty-barrier-panel";
@@ -26,6 +27,7 @@ export default function AgentDetailPage({ params }: { params: Promise<{ id: stri
   const id = Number(idStr);
   const router = useRouter();
   const { showToast, plan } = useCredits();
+  const [mcpOpen, setMcpOpen] = useState(false);
 
   const card = getAgentById(id);
 
@@ -149,6 +151,14 @@ export default function AgentDetailPage({ params }: { params: Promise<{ id: stri
                   <Copy className="h-4 w-4" strokeWidth={2} />
                   复制配置
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setMcpOpen(true)}
+                  className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-xl border border-[var(--glass-border-subtle)] bg-[var(--glass-bg)] px-5 text-[14px] font-medium text-[var(--text-icon-text-2)] shadow-[var(--shadow-card)] backdrop-blur-[18px] saturate-150 transition-[transform,background-color] hover:bg-[var(--neutral-grey60)] active:scale-[0.96]"
+                >
+                  <Plug className="h-4 w-4" strokeWidth={2} />
+                  MCP 工具
+                </button>
               </div>
             </div>
           </div>
@@ -205,6 +215,7 @@ export default function AgentDetailPage({ params }: { params: Promise<{ id: stri
           </section>
         </div>
       </div>
+      <AgentMcpPicker open={mcpOpen} agentId={idStr} onClose={() => setMcpOpen(false)} />
     </AppShell>
   );
 }
