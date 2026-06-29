@@ -34,6 +34,23 @@ export interface AgentTool {
   source: string;
 }
 
+export interface AgentSummary {
+  id: string;
+  name: string;
+  status?: string;
+}
+
+/** 取真实智能体列表（UUID）—— 供 MCP picker 在非 UUID 路由下选定真 agent。 */
+export async function listAgents(): Promise<AgentSummary[]> {
+  const res = await apiFetch<AgentSummary[] | { items: AgentSummary[] }>("/agents?page=1&size=200");
+  return Array.isArray(res) ? res : res.items ?? [];
+}
+
+/** 是否为合法 UUID（决定 picker 直接用路由 id 还是弹出 agent 选择器）。 */
+export function isUuid(value: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+}
+
 /** 测试连接一个 MCP server 并列出其工具（不落库）。 */
 export function testMcpServer(serverUrl: string, apiKey?: string): Promise<McpTestResult> {
   return apiFetch<McpTestResult>("/tools/test-mcp", {

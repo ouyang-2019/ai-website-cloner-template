@@ -3,10 +3,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { X, Check, Plug, Plus, Loader2, AlertCircle } from "lucide-react";
 import {
+  type AgentSummary,
   type AgentTool,
   type McpRemoteTool,
   installMcpTool,
+  isUuid,
   listAgentMcpTools,
+  listAgents,
   setAgentToolEnabled,
   testMcpServer,
 } from "@/lib/mcp";
@@ -37,14 +40,33 @@ export function AgentMcpPicker({ open, agentId, onClose }: Props) {
   const [installing, setInstalling] = useState<string | null>(null);
   const [error, setError] = useState("");
 
+  // 真 agent 选择：路由 id 是 UUID → 直接用；否则（静态 demo 数字 id）从后端选一个真 agent。
+  const propIsUuid = isUuid(agentId);
+  const [agents, setAgents] = useState<AgentSummary[]>([]);
+  const [selectedAgentId, setSelectedAgentId] = useState("");
+  const effectiveAgentId = propIsUuid ? agentId : selectedAgentId;
+
   const refresh = useCallback(() => {
-    if (!agentId) return;
+    if (!effectiveAgentId) {
+      setTools([]);
+      return;
+    }
     setLoading(true);
-    listAgentMcpTools(agentId)
+    listAgentMcpTools(effectiveAgentId)
       .then(setTools)
       .catch(() => setTools([]))
       .finally(() => setLoading(false));
-  }, [agentId]);
+  }, [effectiveAgentId]);
+
+  useEffect(() => {
+    if (!open || propIsUuid) return;
+    listAgents()
+      .then((list) => {
+        setAgents(list);
+        setSelectedAgentId((cur) => cur || (list[0]?.id ?? ""));
+      })
+      .catch(() => setAgents([]));
+  }, [open, propIsUuid]);
 
   useEffect(() => {
     if (open) refresh();
@@ -55,7 +77,7 @@ export function AgentMcpPicker({ open, agentId, onClose }: Props) {
   const toggle = async (t: AgentTool) => {
     setBusyId(t.id);
     try {
-      await setAgentToolEnabled(agentId, t.id, !t.enabled);
+      await setAgentToolEnabled(effectiveAgentId, t.id, !t.enabled);
       setTools((prev) => prev.map((x) => (x.id === t.id ? { ...x, enabled: !x.enabled } : x)));
     } catch {
       setError("更新挂载状态失败");
@@ -100,11 +122,11 @@ export function AgentMcpPicker({ open, agentId, onClose }: Props) {
     try {
       await installMcpTool({ serverName: sName, serverUrl: serverUrl.trim(), tool });
       // 安装后即为该 agent 启用挂载（按 display_name + server 名匹配新建工具）
-      const fresh = await listAgentMcpTools(agentId);
+      const fresh = effectiveAgentId ? await listAgentMcpTools(effectiveAgentId) : [];
       const created = fresh.find(
         (t) => t.display_name === tool.name && (t.mcp_server_name || "") === sName,
       );
-      if (created) await setAgentToolEnabled(agentId, created.id, true);
+      if (created && effectiveAgentId) await setAgentToolEnabled(effectiveAgentId, created.id, true);
       setTools(fresh);
       setTab("mounted");
     } catch {
@@ -157,6 +179,24 @@ export function AgentMcpPicker({ open, agentId, onClose }: Props) {
         {error && (
           <div className="flex items-center gap-2 border-b border-[var(--neutral-grey200)] bg-red-50 px-4 py-2 text-[12px] text-red-600">
             <AlertCircle className="h-3.5 w-3.5 shrink-0" /> {error}
+          </div>
+        )}
+
+        {!propIsUuid && (
+          <div className="flex items-center gap-2 border-b border-[var(--neutral-grey200)] px-4 py-2">
+            <span className="shrink-0 text-[11px] text-[var(--text-icon-text-4)]">智能体</span>
+            <select
+              value={selectedAgentId}
+              onChange={(e) => setSelectedAgentId(e.target.value)}
+              className="h-8 flex-1 rounded-lg border border-[var(--neutral-grey300)] bg-white px-2 text-[12px] outline-none focus:border-[var(--brand-brand03-blue)]"
+            >
+              {agents.length === 0 && <option value="">（无可用智能体 / 未登录）</option>}
+              {agents.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name}
+                </option>
+              ))}
+            </select>
           </div>
         )}
 
